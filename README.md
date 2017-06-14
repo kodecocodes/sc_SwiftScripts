@@ -26,3 +26,15 @@ $ swiftc -emit-library \
   -module-name RandomStringGeneration \
   RandomStringGeneration/*.swift
 ```
+
+To install cocoapods rome:
+
+```
+$ gem install cocoapods-rome
+```
+
+Then to install the dependency:
+
+```
+$ pod install
+```

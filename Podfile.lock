@@ -1,0 +1,12 @@
+PODS:
+  - Commander (0.6.0)
+
+DEPENDENCIES:
+  - Commander
+
+SPEC CHECKSUMS:
+  Commander: fba7c96c9e787ecc8ebe0737be875e1e18ef47ff
+
+PODFILE CHECKSUM: 5380b7673087b2170e0bed1a7216774c23b1be62
+
+COCOAPODS: 1.2.1

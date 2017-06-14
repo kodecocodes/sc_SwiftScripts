@@ -1,14 +1,18 @@
 import Foundation
 
-struct UsableCharacters: OptionSet {
-  let rawValue: Int
+public struct UsableCharacters: OptionSet {
+  public let rawValue: Int
   
-  static let lowercase = UsableCharacters(rawValue: 1 << 0)
-  static let uppercase = UsableCharacters(rawValue: 1 << 1)
-  static let numbers   = UsableCharacters(rawValue: 1 << 2)
+  public static let lowercase = UsableCharacters(rawValue: 1 << 0)
+  public static let uppercase = UsableCharacters(rawValue: 1 << 1)
+  public static let numbers   = UsableCharacters(rawValue: 1 << 2)
   
-  static let alphanumeric: UsableCharacters = [.lowercase, .uppercase, .numbers]
+  public static let alphanumeric: UsableCharacters = [.lowercase, .uppercase, .numbers]
   
+  public init(rawValue: Int) {
+    self.rawValue = rawValue
+  }
+
   var characterSet: Set<Character> {
     var characterSet = Set<Character>()
     if contains(.lowercase) {
@@ -24,7 +28,7 @@ struct UsableCharacters: OptionSet {
   }
 }
 
-protocol RandomStringGenerator {
+public protocol RandomStringGenerator {
   var usableCharacters: UsableCharacters { get }
   var length: Int { get }
   var count: Int { get }

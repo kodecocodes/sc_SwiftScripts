@@ -1,17 +1,17 @@
 import Foundation
 
-struct AtmosphericNoisePasswordGenerator: RandomStringGenerator {
-  var usableCharacters: UsableCharacters
-  var length: Int
-  var count: Int
+public struct AtmosphericNoisePasswordGenerator: RandomStringGenerator {
+  public var usableCharacters: UsableCharacters
+  public var length: Int
+  public var count: Int
   
-  init(length: Int, usableCharacters: UsableCharacters = .alphanumeric, count: Int = 1) {
+  public init(length: Int, usableCharacters: UsableCharacters = .alphanumeric, count: Int = 1) {
     self.length = length
     self.usableCharacters = usableCharacters
     self.count = count
   }
   
-  func generate() -> [String] {
+  public func generate() -> [String] {
     guard let url = url() else { return [] }
     var data: Data? = nil
     

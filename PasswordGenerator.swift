@@ -1,43 +1,27 @@
-#!/usr/bin/env swift -lRandomStringGeneration -L RandomStringGeneration -I RandomStringGeneration -target x86_64-apple-macosx10.13
+#!/usr/bin/env swift -lRandomStringGeneration -L RandomStringGeneration -I RandomStringGeneration -F Rome -target x86_64-apple-macosx10.13
 
 import Foundation
 import RandomStringGeneration
+import Commander
 
-enum PasswordGeneratorType {
-  case pseudoRandom
-  case atmospheric
-  case safari
-}
 
-var count: Int = 1
-var length: Int = 15
-var generatorType: PasswordGeneratorType = .pseudoRandom
+command(
+  Argument<String>("type", description: "Choose pseudo, atmospheric or safari"),
+  Option("length", 12, description: "The length of the passwords to generate"),
+  Option("count", 5, description: "The number of passwords to generate")
+  ) { (type, length, count) in
+  
+  let generator: RandomStringGenerator
 
-for argument in CommandLine.arguments {
-  if argument.starts(with: "--length=") {
-    length = Int(argument.substring(from: "--length=".endIndex)) ?? length
-  } else if argument.starts(with: "--count=") {
-    count = Int(argument.substring(from: "--count=".endIndex)) ?? count
-  } else if argument == "--safari" {
-    generatorType = .safari
-  } else if argument == "--atmospheric" {
-    generatorType = .atmospheric
+  switch type {
+  case "safari":
+    generator = SafariPasswordGenerator(count: count)
+  case "atmospheric":
+    generator = AtmosphericNoisePasswordGenerator(length: length, count: count)
+  default:
+    generator = PseudoRandomPasswordGenerator(length: length, count: count)
   }
-}
 
-var generator: RandomStringGenerator? = nil
-
-switch generatorType {
-case .pseudoRandom:
-  generator = PseudoRandomPasswordGenerator(length: length, count: count)
-case .atmospheric:
-  generator = AtmosphericNoisePasswordGenerator(length: length, count: count)
-case .safari:
-  generator = SafariPasswordGenerator(count: count)
-}
-
-let passwords = generator!.generate()
-
-print(passwords.joined(separator: "\n"))
-
+  print(generator.generate().joined(separator: "\n"))
+}.run()
 

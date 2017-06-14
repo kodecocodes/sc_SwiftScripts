@@ -1,6 +1,7 @@
-#!/usr/bin/env swift
+#!/usr/bin/env swift -lRandomStringGeneration -L RandomStringGeneration -I RandomStringGeneration -target x86_64-apple-macosx10.13
 
 import Foundation
+import RandomStringGeneration
 
 enum PasswordGeneratorType {
   case pseudoRandom
@@ -18,7 +19,7 @@ for argument in CommandLine.arguments {
   } else if argument.starts(with: "--count=") {
     count = Int(argument.substring(from: "--count=".endIndex)) ?? count
   } else if argument == "--safari" {
-    generatorType = .pseudoRandom
+    generatorType = .safari
   } else if argument == "--atmospheric" {
     generatorType = .atmospheric
   }

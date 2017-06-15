@@ -1,27 +1,69 @@
-#!/usr/bin/env swift -lRandomStringGeneration -L RandomStringGeneration -I RandomStringGeneration -F Rome -target x86_64-apple-macosx10.13
+#!/usr/bin/env swift
 
-import Foundation
-import RandomStringGeneration
-import Commander
-
-
-command(
-  Argument<String>("type", description: "Choose pseudo, atmospheric or safari"),
-  Option("length", 12, description: "The length of the passwords to generate"),
-  Option("count", 5, description: "The number of passwords to generate")
-  ) { (type, length, count) in
+struct UsableCharacters: OptionSet {
+  let rawValue: Int
   
-  let generator: RandomStringGenerator
-
-  switch type {
-  case "safari":
-    generator = SafariPasswordGenerator(count: count)
-  case "atmospheric":
-    generator = AtmosphericNoisePasswordGenerator(length: length, count: count)
-  default:
-    generator = PseudoRandomPasswordGenerator(length: length, count: count)
+  static let lowercase = UsableCharacters(rawValue: 1 << 0)
+  static let uppercase = UsableCharacters(rawValue: 1 << 1)
+  static let numbers   = UsableCharacters(rawValue: 1 << 2)
+  
+  static let alphanumeric: UsableCharacters = [.lowercase, .uppercase, .numbers]
+  
+  var characterSet: Set<Character> {
+    var characterSet = Set<Character>()
+    if contains(.lowercase) {
+      characterSet.formUnion("qwertyuiopasdfghjklzxcvbnm")
+    }
+    if contains(.uppercase) {
+      characterSet.formUnion("QWERTYUIOPASDFGHJKLZXCVBNM")
+    }
+    if contains(.numbers) {
+      characterSet.formUnion("1234567890")
+    }
+    return characterSet
   }
+}
 
-  print(generator.generate().joined(separator: "\n"))
-}.run()
+protocol RandomStringGenerator {
+  var usableCharacters: UsableCharacters { get }
+  var length: Int { get }
+  var count: Int { get }
+  
+  func generate() -> [String]
+}
+
+struct PseudoRandomPasswordGenerator: RandomStringGenerator {
+  var usableCharacters: UsableCharacters
+  var length: Int
+  var count: Int
+  
+  init(length: Int, usableCharacters: UsableCharacters = .alphanumeric, count: Int = 1) {
+    self.length = length
+    self.usableCharacters = usableCharacters
+    self.count = count
+  }
+  
+  func generate() -> [String] {
+    // TODO
+  }
+}
+
+struct SafariPasswordGenerator: RandomStringGenerator {
+  let usableCharacters: UsableCharacters = .alphanumeric
+  let length: Int = 12
+  var count: Int
+  
+  init(count: Int = 1) {
+    self.count = count
+  }
+  
+  func generate() -> [String] {
+    // TODO
+  }
+}
+
+
+
+// TODO
+
 

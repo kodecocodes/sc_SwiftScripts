@@ -70,14 +70,16 @@ struct SafariPasswordGenerator: RandomStringGenerator {
   }
   
   func generate() -> [String] {
-    // TODO
-    return []
+    let generator = PseudoRandomPasswordGenerator(length: 3, usableCharacters: usableCharacters, count: length / 3)
+    return (0 ..< count).map { _ in
+      generator.generate().joined(separator: "-")
+    }
   }
 }
 
 
 
-let generator = PseudoRandomPasswordGenerator(length: 12)
+let generator = SafariPasswordGenerator(count: 10)
 
 print(generator.generate().joined(separator: "\n"))
 

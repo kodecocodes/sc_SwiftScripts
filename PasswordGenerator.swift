@@ -1,5 +1,7 @@
 #!/usr/bin/env swift
 
+import Darwin
+
 struct UsableCharacters: OptionSet {
   let rawValue: Int
   
@@ -44,7 +46,17 @@ struct PseudoRandomPasswordGenerator: RandomStringGenerator {
   }
   
   func generate() -> [String] {
-    // TODO
+    return (0 ..< count).map { _ in generateSingle() }
+  }
+
+  private func generateSingle() -> String {
+    let characters = Array(usableCharacters.characterSet)
+
+    let result = (0 ..< length).map { _ in
+      characters[Int(arc4random_uniform(UInt32(characters.count)))]
+    }
+
+    return String(result)
   }
 }
 
@@ -59,11 +71,14 @@ struct SafariPasswordGenerator: RandomStringGenerator {
   
   func generate() -> [String] {
     // TODO
+    return []
   }
 }
 
 
 
-// TODO
+let generator = PseudoRandomPasswordGenerator(length: 12)
+
+print(generator.generate().joined(separator: "\n"))
 
 

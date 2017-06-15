@@ -1,4 +1,6 @@
-#!/usr/bin/env swift
+#!/usr/bin/env swift -lRandomStringGeneration -L RandomStringGeneration -I RandomStringGeneration -target x86_64-apple-macosx10.13
+
+import RandomStringGeneration
 
 dump(CommandLine.arguments)
 
